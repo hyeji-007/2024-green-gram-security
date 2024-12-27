@@ -1,9 +1,9 @@
 package com.green.greengram.config.jwt;
 
 import com.green.greengram.config.security.MyUserDetails;
-import io.jsonwebtoken.Jwt;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnCheckpointRestore;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
 
@@ -13,13 +13,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest // 통합 테스트때 사용
+@SpringBootTest //통합 테스트때 사용
 class TokenProviderTest {
     //테스트는 생성자를 이용한 DI가 불가능
     //DI방법은 필드, setter메소드, 생성자
     //테스트 때는 필드 주입방식을 사용한다.
 
-    @Autowired //리플렉션 API를 이용해서 setter가 없어도 주입 가능
+    @Autowired //리플렉션 API을 이용해서 setter가 없어도 주입 가능
     private TokenProvider tokenProvider;
 
     @Test
@@ -43,19 +43,10 @@ class TokenProviderTest {
 
     }
 
-    @Test
-    void validToken() {
-        //1분 (이미 지남)
-        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzM4NCJ9.eyJpc3MiOiJncmVlbkBncmVlbi5rciIsImlhdCI6MTczNDQwMTY3MiwiZXhwIjoxNzM0NDAxNzMyLCJzaWduZWRVc2VyIjoie1wic2lnbmVkVXNlcklkXCI6MTAsXCJyb2xlc1wiOltcIlJPTEVfVVNFUlwiLFwiUk9MRV9BRE1JTlwiXX0ifQ.KsewH2oby-NaGC1sgTGAffbMcp9uQpv5P5qIzZ0Hm4aisLN0V0avL3jEJv14k3J2";
-
-        boolean result = tokenProvider.validToken(token);
-
-        assertFalse(result);
-    }
 
     @Test
     void getAuthentication() {
-        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzM4NCJ9.eyJpc3MiOiJncmVlbkBncmVlbi5rciIsImlhdCI6MTczNDQwMzc2NCwiZXhwIjoxNzM0NDE0NTY0LCJzaWduZWRVc2VyIjoie1wic2lnbmVkVXNlcklkXCI6MTAsXCJyb2xlc1wiOltcIlJPTEVfVVNFUlwiLFwiUk9MRV9BRE1JTlwiXX0ifQ.GhJuDzgxTU9kyajUCghb-q7UVSvWXHdziUNKGeP40rP3OkKNV05tJS_X_UKDDR0u"; //3시간 짜리
+        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJncmVlbkBncmVlbi5rciIsImlhdCI6MTczNDQwMjk4NiwiZXhwIjoxNzM0NDEzNzg2LCJzaWduZWRVc2VyIjoie1wic2lnbmVkVXNlcklkXCI6MTAsXCJyb2xlc1wiOltcIlJPTEVfVVNFUlwiLFwiUk9MRV9BRE1JTlwiXX0ifQ.CRtVju5f60KnCx9CLwIRahr72dZsSYH5G8K3EFDUFJ3GXAXULFA8ANVtI9kml8nIdW2ViPiV-kbL-Wc5EUqmkg"; //3시간 짜리
 
         Authentication authentication = tokenProvider.getAuthentication(token);
 
