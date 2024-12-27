@@ -12,6 +12,7 @@ import com.green.greengram.feed.model.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.availability.ApplicationAvailabilityBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -34,6 +35,7 @@ public class FeedService {
     private final FeedCommentMapper feedCommentMapper;
     private final MyFileUtils myFileUtils;
     private final AuthenticationFacade authenticationFacade;
+    private final ApplicationAvailabilityBean applicationAvailability;
 
     @Transactional
     //자동 커밋 종료
@@ -113,11 +115,14 @@ public class FeedService {
         List<FeedAndPicDto> feedAndPicDtoList = feedMapper.selFeedWithPicList(p);
         List<Long> feedIds = new ArrayList<>(list.size());
 
+        //FeedGetRes: 중복된 값을 하나로 묶어준다.
         FeedGetRes beforeFeedGetRes = new FeedGetRes();
         for(FeedAndPicDto feedAndPicDto : feedAndPicDtoList) {
+            //그 전 값과 달랐을 때만 하는 작업
             if(beforeFeedGetRes.getFeedId() != feedAndPicDto.getFeedId()) {
                 feedIds.add(feedAndPicDto.getFeedId());
 
+                //이전 FeedId 값이 바뀜
                 beforeFeedGetRes = new FeedGetRes();
                 beforeFeedGetRes.setPics(new ArrayList<>(3));
                 list.add(beforeFeedGetRes);
@@ -130,6 +135,7 @@ public class FeedService {
                 beforeFeedGetRes.setWriterPic(feedAndPicDto.getWriterPic());
                 beforeFeedGetRes.setIsLike(feedAndPicDto.getIsLike());
             }
+            //똑같은 FeedId 값이 넘어오고 사진이 다를 때만 하는 작업
             beforeFeedGetRes.getPics().add(feedAndPicDto.getPic());
         }
 
@@ -235,12 +241,11 @@ public class FeedService {
 
     public List<FeedGetRes> getFeedList4(FeedGetReq p) {
         List<FeedWithPicCommentDto> dtoList = feedMapper.selFeedWithPicAndCommentLimit4List(p);
-        List<FeedGetRes> res = new ArrayList<>(dtoList.size());
-        for(FeedWithPicCommentDto dto : dtoList){
-            FeedGetRes res1 = new FeedGetRes(dto);
-            res.add(res1);
+        List<FeedGetRes> list = new ArrayList<>(dtoList.size());
+        for(FeedWithPicCommentDto item : dtoList) {
+            list.add(new FeedGetRes(item));
         }
-        return res;
+        return list;
     }
 
 

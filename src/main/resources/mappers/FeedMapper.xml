@@ -69,7 +69,7 @@
     </resultMap>
 
     <resultMap id="feedPicResultMap" type="String">
-        <result property="pic" column="pic" />
+        <id property="pic" column="pic" />
     </resultMap>
 
     <resultMap id="feedCommentResultMap" type="com.green.greengram.feed.comment.model.FeedCommentDto">

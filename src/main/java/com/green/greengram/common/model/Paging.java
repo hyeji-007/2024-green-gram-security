@@ -3,6 +3,7 @@ package com.green.greengram.common.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.green.greengram.common.Constants;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Getter
 @ToString
+@EqualsAndHashCode
 public class Paging {
     //final static: 상수(값을 한번만 초기화)
     //private: 외부에서 직접 접근하지 못하도록 제한.

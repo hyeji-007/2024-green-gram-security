@@ -73,6 +73,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 
 
+
+
     private List<MyErrorResponse.ValidationError> getValidationError(BindException e) {
         List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
         //List<FieldError> fieldErrors = e.getFieldErrors();
